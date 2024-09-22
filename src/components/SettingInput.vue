@@ -1,4 +1,5 @@
 <script setup>
+import axios from 'axios'
 const setting = defineModel('setting')
 const value = defineModel('value')
 
@@ -19,11 +20,21 @@ function input_type(value) {
     }
 }
 
+function update_setting(field, new_value) {
+    console.log("want to update " + setting + " to " + new_value)
+    let local_host = "localhost:8080";
+
+    axios.post("http://" + local_host + "/command",
+        { Settings: { Set: { settings: { [field]: new_value } } } },
+    ).then(result => console.log(result))
+}
+
 </script>
 
 <template>
     <div>
         <label :for=setting>{{ setting }}</label>
         <input :id="setting" :type="input_type(value)" v-model="value">
+        <button @click="update_setting(setting, value)">Update</button>
     </div>
 </template>
