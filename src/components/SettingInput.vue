@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import axios from 'axios'
-const setting = defineModel('setting')
-const value = defineModel('value')
 
-function input_type(value) {
+const setting = defineModel<string>('setting', { required: true })
+const value = defineModel<boolean | number | string | object>('value', { required: true })
+
+function input_type(value: any) {
     let type_id = typeof (value);
     if (type_id == "number") {
         return "text"
@@ -18,9 +19,11 @@ function input_type(value) {
         console.log("value is of type object");
         return "text"
     }
+    console.log("this is a fallback for unhandled type", type_id, value);
+    return "text"
 }
 
-function update_setting(field, new_value) {
+function update_setting(field: string, new_value: boolean | number | string | object) {
     console.log("want to update " + setting + " to " + new_value)
     let local_host = "localhost:8080";
 
