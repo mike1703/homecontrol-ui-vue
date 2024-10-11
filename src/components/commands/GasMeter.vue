@@ -44,10 +44,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <button @click="get_current_value()">Get current value</button>
-    <label for="current_value">Gas Meter</label>
-    <input id="current_value" v-model.number="current_value" />
-    <button @click="set_gas_value">Update</button>
-  </div>
+  <v-btn @click="get_current_value()" variant="outlined">Get current value</v-btn>
+  <v-text-field width="400" label="Gas Meter" v-model="current_value" clearable hide-details>
+    <template v-slot:append> <v-btn class="mr-0 ml-2 mb-1 p-0" @click="set_gas_value" color="primary">
+        Submit
+      </v-btn>
+    </template>
+  </v-text-field>
 </template>

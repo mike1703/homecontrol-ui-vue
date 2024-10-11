@@ -14,5 +14,5 @@ function reboot() {
 </script>
 
 <template>
-  <button @click="reboot()">Reboot</button>
+  <v-btn @click="reboot()" variant="outlined">Reboot</v-btn>
 </template>

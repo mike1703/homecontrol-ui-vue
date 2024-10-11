@@ -12,8 +12,8 @@ async function load_data() {
     .post(hostname + "/command", { Settings: "Export" })
     .then(
       (homecontrol_response) =>
-        (data.settings =
-          homecontrol_response.data.Result.appliance_message.Command.command_result.Settings.Config.settings)
+      (data.settings =
+        homecontrol_response.data.Result.appliance_message.Command.command_result.Settings.Config.settings)
     );
 }
 onMounted(async () => {
@@ -22,9 +22,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="settings">
-    <li v-for="(value, setting) in data.settings">
-      <SettingInput :setting :value />
-    </li>
-  </div>
+  <v-container>
+    <v-row v-for="(value, setting) in data.settings">
+      <v-col md="3">
+        <SettingInput :setting :value />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>

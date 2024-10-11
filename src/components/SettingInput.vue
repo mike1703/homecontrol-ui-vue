@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from "axios";
-import { inject } from "vue";
+import { computed, inject } from "vue";
 
 const hostname = inject("hostname");
 
@@ -9,24 +9,17 @@ const value = defineModel<boolean | number | string | object>("value", {
   required: true,
 });
 
-function input_type(value: any) {
-  let type_id = typeof value;
-  if (type_id == "number") {
-    return "text";
-  }
-  if (type_id == "string") {
-    return "text";
-  }
-  if (type_id == "boolean") {
-    return "checkbox";
-  }
-  if (type_id == "object") {
-    console.log("value is of type object");
-    return "text";
-  }
-  console.log("this is a fallback for unhandled type", type_id, value);
-  return "text";
-}
+const is_bool = computed(() => {
+  return typeof value.value == "boolean";
+});
+
+const is_string = computed(() => {
+  return (
+    typeof value.value == "string" ||
+    typeof value.value == "number" ||
+    typeof value.value == "object"
+  );
+});
 
 function update_setting(
   field: string,
@@ -43,9 +36,16 @@ function update_setting(
 </script>
 
 <template>
-  <div>
-    <label :for="setting">{{ setting }}</label>
-    <input :id="setting" :type="input_type(value)" v-model="value" />
-    <button @click="update_setting(setting, value)">Update</button>
-  </div>
+  <v-text-field v-if="is_string" :label="setting" v-model="value" clearable hide-details>
+    <template v-slot:append> <v-btn class="mr-0 ml-2 mb-1 p-0" @click="update_setting(setting, value)" color="primary">
+        Submit
+      </v-btn>
+    </template>
+  </v-text-field>
+  <v-switch color="primary" v-if="is_bool" :label="setting" v-model="value" hide-details>
+    <template v-slot:append> <v-btn class="mr-0 ml-2 mb-1 p-0" @click="update_setting(setting, value)" color="primary">
+        Submit
+      </v-btn>
+    </template>
+  </v-switch>
 </template>

@@ -18,5 +18,5 @@ function update() {
 </script>
 
 <template>
-  <button @click="update()">Update Firmware</button>
+  <v-btn @click="update()" variant="outlined">Update Firmware</v-btn>
 </template>
