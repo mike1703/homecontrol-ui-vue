@@ -1,41 +1,51 @@
 <script setup lang="ts">
-import axios from "axios";
-import { inject, onMounted } from "vue";
+import { onMounted } from "vue";
 import type { HomeControlCommandResult } from "./common";
+import { command } from "./helper";
 
-const hostname = inject("hostname");
+interface MeterCommandResult {
+  Meter: Meter;
+}
+
+interface Meter {
+  MeterSet: MeterSet;
+  MeterGet: MeterGet;
+}
+
+interface MeterSet {
+  name: string;
+  value: number;
+  old_value: number;
+}
+
+interface MeterGet {
+  name: string;
+  value: number;
+}
 
 const current_value = defineModel<number>();
 
+/** set the gas meter value */
 function set_gas_value() {
   if (current_value.value == undefined) {
     return;
   }
-  axios
-    .post(hostname + "/command", {
-      Meter: {
-        Set: {
-          new_counter: current_value.value * 100,
-        },
-      },
-    })
-    .then((response) => console.log(response));
+  const set_gas_command = { Meter: { Set: { new_counter: current_value.value * 100, } } };
+  command(set_gas_command).then((response) => console.log(response));
 }
 
+/** get the current gas meter value */
 function get_current_value() {
-  axios
-    .post<HomeControlCommandResult>(hostname + "/command", {
-      Meter: "Get",
-    })
-    .then((response) => {
-      console.log(
-        response.data.Result.appliance_message.Command.command_result.Meter
-          .MeterGet.value
-      );
-      current_value.value =
-        response.data.Result.appliance_message.Command.command_result.Meter
-          .MeterGet.value / 100;
-    });
+  const get_gas_command = { Meter: "Get" }
+  command<HomeControlCommandResult<MeterCommandResult>>(get_gas_command).then((response) => {
+    console.log(
+      response.data.Result.appliance_message.Command.command_result.Meter
+        .MeterGet.value
+    );
+    current_value.value =
+      response.data.Result.appliance_message.Command.command_result.Meter
+        .MeterGet.value / 100;
+  });
 }
 
 onMounted(async () => {

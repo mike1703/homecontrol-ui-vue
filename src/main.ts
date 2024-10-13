@@ -19,6 +19,7 @@ const vuetify = createVuetify({
 
 const app = createApp(App).use(vuetify).use(router);
 
-app.provide("hostname", window.location.origin);
+export const hostname = window.location.origin;
+app.provide("hostname", hostname);
 
 app.mount("#app");

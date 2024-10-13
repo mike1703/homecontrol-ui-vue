@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import axios from "axios";
-import { computed, inject } from "vue";
+import { computed } from "vue";
+import { command } from "./commands/helper";
 
-const hostname = inject("hostname");
 
 const setting = defineModel<string>("setting", { required: true });
 const value = defineModel<boolean | number | string | object>("value", {
@@ -27,11 +26,8 @@ function update_setting(
 ) {
   console.log("want to update " + setting + " to " + new_value);
 
-  axios
-    .post(hostname + "/command", {
-      Settings: { Set: { settings: { [field]: new_value } } },
-    })
-    .then((result) => console.log(result));
+  const update_setting_command = { Settings: { Set: { settings: { [field]: new_value } } } }
+  command(update_setting_command).then((result) => console.log(result));
 }
 </script>
 

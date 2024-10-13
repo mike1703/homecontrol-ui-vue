@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import axios from "axios";
-import { inject } from "vue";
-
-const hostname = inject("hostname");
+import { command } from './helper';
 
 function reboot() {
-  axios
-    .post(hostname + "/command", {
-      Diagnostic: "Restart",
-    })
-    .then((response) => console.log(response));
+  const reboot_command = { Diagnostic: "Restart" };
+  command(reboot_command).then((response) => console.log(response));
 }
 </script>
 

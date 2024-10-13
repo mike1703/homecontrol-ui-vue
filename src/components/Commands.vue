@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import GasMeter from "./commands/GasMeter.vue";
 import Reboot from "./commands/Reboot.vue";
-import Update from "./commands/Update.vue";
+import Ota from "./commands/Ota.vue";
 </script>
 
 <template>
@@ -10,7 +10,7 @@ import Update from "./commands/Update.vue";
       <Reboot />
     </v-list-item>
     <v-list-item>
-      <Update />
+      <Ota />
     </v-list-item>
     <v-list-item>
       <GasMeter />

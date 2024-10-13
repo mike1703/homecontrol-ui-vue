@@ -1,20 +1,30 @@
 <script setup lang="ts">
-import axios from "axios";
-import { inject, onMounted, reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import SettingInput from "./SettingInput.vue";
+import { command } from "./commands/helper";
+import type { HomeControlCommandResult } from "./commands/common";
 
-const hostname = inject("hostname");
+interface SettingsCommandResult {
+  Settings: Settings
+}
+
+interface Settings {
+  Config: settings_dict
+}
+
+interface settings_dict {
+  settings: [string, any]
+}
 
 let data = reactive({ settings: {} });
 
 async function load_data() {
-  axios
-    .post(hostname + "/command", { Settings: "Export" })
-    .then(
-      (homecontrol_response) =>
-      (data.settings =
-        homecontrol_response.data.Result.appliance_message.Command.command_result.Settings.Config.settings)
-    );
+  const load_settings_command = { Settings: "Export" };
+  command<HomeControlCommandResult<SettingsCommandResult>>(load_settings_command).then(
+    (homecontrol_response) =>
+    (data.settings =
+      homecontrol_response.data.Result.appliance_message.Command.command_result.Settings.Config.settings)
+  );
 }
 onMounted(async () => {
   await load_data();

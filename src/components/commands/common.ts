@@ -1,37 +1,17 @@
-export interface HomeControlCommandResult {
-  Result: Result;
+export interface HomeControlCommandResult<CommandTypeResult> {
+  Result: Result<CommandTypeResult>;
 }
 
-export interface Result {
+export interface Result<CommandTypeResult> {
   timestamp: number;
-  appliance_message: ApplianceMessage;
+  appliance_message: ApplianceMessage<CommandTypeResult>;
 }
 
-export interface ApplianceMessage {
-  Command: Command;
+export interface ApplianceMessage<CommandTypeResult> {
+  Command: Command<CommandTypeResult>;
 }
 
-export interface Command {
+export interface Command<CommandTypeResult> {
   id: number;
-  command_result: CommandResult;
-}
-
-export interface CommandResult {
-  Meter: Meter;
-}
-
-export interface Meter {
-  MeterSet: MeterSet;
-  MeterGet: MeterGet;
-}
-
-export interface MeterSet {
-  name: string;
-  value: number;
-  old_value: number;
-}
-
-export interface MeterGet {
-  name: string;
-  value: number;
+  command_result: CommandTypeResult;
 }
