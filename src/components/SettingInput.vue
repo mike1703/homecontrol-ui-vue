@@ -15,9 +15,26 @@ const is_bool = computed(() => {
 const is_string = computed(() => {
   return (
     typeof value.value == "string" ||
-    typeof value.value == "number" ||
     typeof value.value == "object"
   );
+});
+
+const is_number = computed(() => {
+  return (typeof value.value == "number");
+});
+
+// this is just a ugly workaround to have a number_value for v-number-input...
+// this just wraps value.value and explicitly types it. this is only used on is_number == true
+const number_value = computed({
+  get: () => {
+    if (is_number) {
+      return (<number>value.value)
+    }
+    else { return 0 }
+  },
+  set: (val) => {
+    value.value = val
+  }
 });
 
 function update_setting(
@@ -38,6 +55,12 @@ function update_setting(
       </v-btn>
     </template>
   </v-text-field>
+  <v-number-input v-if="is_number" :label="setting" v-model="number_value" clearable hide-details>
+    <template v-slot:append> <v-btn class="mr-0 ml-2 mb-1 p-0" @click="update_setting(setting, value)" color="primary">
+        Submit
+      </v-btn>
+    </template>
+  </v-number-input>
   <v-switch color="primary" v-if="is_bool" :label="setting" v-model="value" hide-details>
     <template v-slot:append> <v-btn class="mr-0 ml-2 mb-1 p-0" @click="update_setting(setting, value)" color="primary">
         Submit
