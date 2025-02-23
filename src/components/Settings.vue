@@ -23,7 +23,7 @@ async function load_data() {
   command<HomeControlCommandResult<SettingsCommandResult>>(load_settings_command).then(
     (homecontrol_response) =>
     (data.settings =
-      homecontrol_response.data.Result.appliance_message.Command.command_result.Settings.Config.settings)
+      homecontrol_response.data.appliance_message.Command.command_result.Settings.Config.settings)
   );
 }
 onMounted(async () => {

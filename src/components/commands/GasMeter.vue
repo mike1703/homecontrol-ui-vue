@@ -39,11 +39,11 @@ function get_current_value() {
   const get_gas_command = { Meter: "Get" }
   command<HomeControlCommandResult<MeterCommandResult>>(get_gas_command).then((response) => {
     console.log(
-      response.data.Result.appliance_message.Command.command_result.Meter
+      response.data.appliance_message.Command.command_result.Meter
         .MeterGet.value
     );
     current_value.value =
-      response.data.Result.appliance_message.Command.command_result.Meter
+      response.data.appliance_message.Command.command_result.Meter
         .MeterGet.value / 100;
   });
 }

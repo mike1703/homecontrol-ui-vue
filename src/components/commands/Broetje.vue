@@ -52,7 +52,7 @@ const configured_broetje_fields = ref()
 function get_all_fields() {
     load_broetje_settings()
     const get_field_list_command = "ListAllFields"
-    command_broetje(get_field_list_command).then((response) => fields.value = response.data.Result.appliance_message.Command.command_result.Broetje.FieldList.fields);
+    command_broetje(get_field_list_command).then((response) => fields.value = response.data.appliance_message.Command.command_result.Broetje.FieldList.fields);
     console.log(fields.value);
 }
 
@@ -63,7 +63,7 @@ async function load_broetje_settings() {
     };
     command<HomeControlCommandResult<SettingsCommandResult>>(load_broetje_setting_command).then(
         (homecontrol_response) => {
-            configured_broetje_fields.value = JSON.parse(homecontrol_response.data.Result.appliance_message.Command.command_result.Settings.Setting.value);
+            configured_broetje_fields.value = JSON.parse(homecontrol_response.data.appliance_message.Command.command_result.Settings.Setting.value);
             console.log(configured_broetje_fields.value);
         }
 
@@ -81,7 +81,7 @@ async function set_broetje_request_fields() {
     command<HomeControlCommandResult<SettingsCommandResult>>(set_broetje_request_fields_command).then(
         (homecontrol_response) =>
         (console.log(
-            homecontrol_response.data.Result.appliance_message.Command.command_result.Settings.Config))
+            homecontrol_response.data.appliance_message.Command.command_result.Settings.Config))
     );
 }
 

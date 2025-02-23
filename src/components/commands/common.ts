@@ -1,8 +1,4 @@
 export interface HomeControlCommandResult<CommandTypeResult> {
-  Result: Result<CommandTypeResult>;
-}
-
-export interface Result<CommandTypeResult> {
   timestamp: number;
   appliance_message: ApplianceMessage<CommandTypeResult>;
 }

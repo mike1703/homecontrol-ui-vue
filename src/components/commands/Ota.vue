@@ -39,7 +39,7 @@ const version = ref()
 /** fetch the current running version */
 function get_version() {
   const get_version_command = "GetVersion"
-  command_ota(get_version_command).then((response) => version.value = response.data.Result.appliance_message.Command.command_result.Ota.Version.version);
+  command_ota(get_version_command).then((response) => version.value = response.data.appliance_message.Command.command_result.Ota.Version.version);
 }
 </script>
 
